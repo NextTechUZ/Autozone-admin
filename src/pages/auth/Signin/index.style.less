@@ -46,7 +46,7 @@
   font-size: @font-size-base;
   margin-right: 10px;
 
-  [dir=rtl] & {
+  [dir='rtl'] & {
     margin-right: 0;
     margin-left: 10px;
   }
@@ -54,7 +54,7 @@
   @media screen and (min-width: @screen-md) {
     margin-right: 16px;
 
-    [dir=rtl] & {
+    [dir='rtl'] & {
       margin-right: 0;
       margin-left: 16px;
     }
@@ -78,14 +78,14 @@
   text-align: right;
   display: block;
 
-  [dir=rtl] & {
+  [dir='rtl'] & {
     text-align: left;
   }
 }
 
 .sign-btn {
   border-radius: @border-radius-base;
-  width: 10rem;
+  width: 100%;
   font-weight: @font-weight-regular;
   font-size: @font-size-base;
   text-transform: uppercase;
@@ -113,7 +113,8 @@
     padding: 8px 6px 6px;
   }
 
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: @primary-color;
     background-color: transparent;
   }
@@ -162,7 +163,7 @@
       margin-right: 8px;
       display: inline-block;
 
-      [dir=rtl] & {
+      [dir='rtl'] & {
         margin-right: 0;
         margin-left: 8px;
       }
@@ -180,7 +181,7 @@
 
 .rememberMe {
   position: relative;
-
+  margin-top: auto;
   & label {
     margin-bottom: 10px;
   }

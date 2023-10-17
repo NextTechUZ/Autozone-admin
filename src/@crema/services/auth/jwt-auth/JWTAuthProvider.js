@@ -15,8 +15,8 @@ export const useJWTAuth = () => useContext(JWTAuthContext);
 
 export const useJWTAuthActions = () => useContext(JWTAuthActionsContext);
 
-const JWTAuthAuthProvider = ({children}) => {
-  const [firebaseData, setJWTAuthData] = useState({
+const JWTAuthProvider = ({children}) => {
+  const [jwtAuthData, setJWTAuthData] = useState({
     user: null,
     isAuthenticated: false,
     isLoading: true,
@@ -38,7 +38,7 @@ const JWTAuthAuthProvider = ({children}) => {
       }
       setAuthToken(token);
       jwtAxios
-        .get('/auth')
+        .get('/admin/get-profile')
         .then(({data}) =>
           setJWTAuthData({
             user: data,
@@ -58,18 +58,19 @@ const JWTAuthAuthProvider = ({children}) => {
     getAuthUser();
   }, []);
 
-  const signInUser = async ({email, password}) => {
-    dispatch({type: FETCH_START});
+  const signInUser = async ({username, password,rememberMe}) => {
+     dispatch({type: FETCH_START});
     try {
-      const {data} = await jwtAxios.post('auth', {email, password});
-      localStorage.setItem('token', data.token);
-      setAuthToken(data.token);
-      const res = await jwtAxios.get('/auth');
-      setJWTAuthData({user: res.data, isAuthenticated: true, isLoading: false});
+       const {data} = await jwtAxios.post('/admin/login', {username, password});
+ 
+      rememberMe && localStorage.setItem('token', data.data.token);
+      setAuthToken(data.data.token);
+      const res = await jwtAxios.get('/admin/get-profile');
+      setJWTAuthData({user: res.data.data.admin, isAuthenticated: true, isLoading: false});
       dispatch({type: FETCH_SUCCESS});
     } catch (error) {
       setJWTAuthData({
-        ...firebaseData,
+        ...jwtAuthData,
         isAuthenticated: false,
         isLoading: false,
       });
@@ -77,24 +78,7 @@ const JWTAuthAuthProvider = ({children}) => {
     }
   };
 
-  const signUpUser = async ({name, email, password}) => {
-    dispatch({type: FETCH_START});
-    try {
-      const {data} = await jwtAxios.post('users', {name, email, password});
-      localStorage.setItem('token', data.token);
-      setAuthToken(data.token);
-      const res = await jwtAxios.get('/auth');
-      setJWTAuthData({user: res.data, isAuthenticated: true, isLoading: false});
-      dispatch({type: FETCH_SUCCESS});
-    } catch (error) {
-      setJWTAuthData({
-        ...firebaseData,
-        isAuthenticated: false,
-        isLoading: false,
-      });
-      dispatch({type: FETCH_ERROR, payload: error.message});
-    }
-  };
+  
 
   const logout = async () => {
     localStorage.removeItem('token');
@@ -109,12 +93,11 @@ const JWTAuthAuthProvider = ({children}) => {
   return (
     <JWTAuthContext.Provider
       value={{
-        ...firebaseData,
+        ...jwtAuthData,
       }}>
       <JWTAuthActionsContext.Provider
         value={{
-          signUpUser,
-          signInUser,
+           signInUser,
           logout,
         }}>
         {children}
@@ -122,8 +105,8 @@ const JWTAuthAuthProvider = ({children}) => {
     </JWTAuthContext.Provider>
   );
 };
-export default JWTAuthAuthProvider;
+export default JWTAuthProvider;
 
-JWTAuthAuthProvider.propTypes = {
+JWTAuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
