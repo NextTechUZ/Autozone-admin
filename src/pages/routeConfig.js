@@ -15,7 +15,7 @@ const routesConfig = [
         messageId: 'sidebar.sample.page1',
         type: 'item',
         icon: <BiAlignLeft />,
-        path: '/sample/page-1',
+        path: '/sample/page-1?pageId=categories',
       },
       {
         id: 'page-2',
