@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const jwtAxios = axios.create({
-  baseURL: `${process.env.REACT_APP_API_URL}/api`, //YOUR_API_URL HERE
+  baseURL: `${process.env.REACT_APP_BASE_API}`, //YOUR_API_URL HERE
   headers: {
     'Content-Type': 'application/json',
   },
