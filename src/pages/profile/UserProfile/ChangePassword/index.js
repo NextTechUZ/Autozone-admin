@@ -13,8 +13,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <Form
-      className='user-profile-form'
+    <Form className='user-profile-form'
       initialValues={{remember: true}}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}>
